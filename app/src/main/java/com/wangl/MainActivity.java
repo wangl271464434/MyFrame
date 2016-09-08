@@ -11,13 +11,19 @@ import com.wangl.model.Book;
 import com.wangl.model.User;
 import com.wangl.mylibrary.util.JsonUtil;
 import com.wangl.mylibrary.util.MyToast;
+import com.wangl.mylibrary.util.OkhttpUtil;
+import com.wangl.mylibrary.util.PicassoUtil;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.user_tv)
     TextView userTv;
     private String url = "https://api.github.com/search/users";
-    private String imgurl = "https://avatars.githubusercontent.com/u/383316?v=3";
+    private String imgurl = "http://www.dabaoku.com/sucaidatu/dongwu/chongwujingling/902438.JPG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,21 +44,27 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
     }
-
     String json;
-
     @Override
     protected void onResume() {
         super.onResume();
-       /* PicassoUtil.setImg(MainActivity.this,imgurl,R.mipmap.ic_launcher,iv);
+        //加载网络图片
+        PicassoUtil.setImg(MainActivity.this,imgurl,R.mipmap.ic_launcher,iv);
+        //加载网络数据
         OkhttpUtil.get(url, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        MyToast.show(MainActivity.this,"请求失败");
+                    }
+                });
             }
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 json = response.body().string();
+                Log.i("url",json);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -60,20 +72,22 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
             }
-        });*/
+        });
+        //以map形式封装json数据
         /*Map map = new HashMap();
         map.put("name","张三");
         map.put("age",23);
         map.put("gander","男");
         String json = JsonUtil.getJsonString(map);
         Log.i("json",json);*/
+        //以list形式封装json数据
         List<User> list = new ArrayList<>();
         list.add(new User("张三", 23, "男"));
         list.add(new User("李四", 25, "男"));
         list.add(new User("王小花", 22, "女"));
         String json = JsonUtil.getListToJson(list);
         Log.i("json", json);
-        text.setText(json);
+        userTv.setText(json);
         List<Book> bookList = new ArrayList<>();
         bookList.add(new Book("Java", 35.00));
         bookList.add(new Book("Android", 55.50));
