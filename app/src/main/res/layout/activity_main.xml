@@ -29,9 +29,23 @@
         android:layout_below="@+id/iv"
         />
     <TextView
-        android:id="@+id/text"
+    android:id="@+id/text"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/btn_text"
+    />
+    <TextView
+        android:id="@+id/book"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/btn_text"
+        android:layout_below="@+id/text"
+        android:layout_marginTop="20dp"
+        />
+    <TextView
+        android:id="@+id/user_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/book"
+        android:layout_marginTop="20dp"
         />
 </RelativeLayout>
